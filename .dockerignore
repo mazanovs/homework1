@@ -1,0 +1,6 @@
+.git
+.dockerignore
+Dockerfile
+Makefile
+/app/api/vendor
+/app/src
