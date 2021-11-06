@@ -16,4 +16,4 @@ API => Writen on Lumen php framework, latest version.
 
 3.1. After docker run need wait some 2-3 min for install dependencies on php framework 
 
-4. Go to your local maschine ip on port 8080.. Example http://127.0.0.1:8080
+4. Go to your local machine ip on port 8080.. Example http://127.0.0.1:8080
