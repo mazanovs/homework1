@@ -32,14 +32,30 @@ class ApiController extends Controller
     */
     public function calcExpression(Request $req)
     {
-        $result = (new \ChrisKonnertz\StringCalc\StringCalc())
-            ->calculate($req->get('data'));
+        /*
+        $result = $this->validate($req, [
+            'data'=>[
+                'required',
+                'regex:/[^+^*^\-^\-^\.^\/\d+]/u'
+            ]
+        ]);
+        */
+       
+        preg_match_all('/([^+^*^\-^\-^\.^\/\d+])/', $req->get('data'), $out);
 
-        // All need to be loged
-        $n = new \App\Models\Logs();
-        $n->expression = $req->get('data');
-        $n->result = $result;
-        $n->save();
+        if(!empty($out[0])){
+
+            $result = "Expression error!";
+
+        }else{
+
+            $result = (new \ChrisKonnertz\StringCalc\StringCalc())->calculate($req->get('data'));       
+            // All need to be loged
+            $n = new \App\Models\Logs();
+            $n->expression = $req->get('data');
+            $n->result = $result;
+            $n->save();
+        }
 
         return response()->json(['result' => $result]);
     }
