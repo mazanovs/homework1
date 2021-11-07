@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -32,31 +34,24 @@ class ApiController extends Controller
     */
     public function calcExpression(Request $req)
     {
-        /*
-        $result = $this->validate($req, [
-            'data'=>[
+      
+        $validator = Validator::make($req->all(), [
+            'data' => [
                 'required',
                 'regex:/[^+^*^\-^\-^\.^\/\d+]/u'
             ]
         ]);
-        */
-       
-        preg_match_all('/([^+^*^\-^\-^\.^\/\d+])/', $req->get('data'), $out);
 
-        if(!empty($out[0])){
-
+        if (!$validator->fails()) { // Validate expression
             $result = "Expression error!";
-
-        }else{
-
-            $result = (new \ChrisKonnertz\StringCalc\StringCalc())->calculate($req->get('data'));       
+        } else {
+            $result = (new \ChrisKonnertz\StringCalc\StringCalc())->calculate($req->get('data'));
             // All need to be loged
             $n = new \App\Models\Logs();
             $n->expression = $req->get('data');
             $n->result = $result;
             $n->save();
         }
-
-        return response()->json(['result' => $result]);
+         return response()->json(['result' => $result]);
     }
 }
