@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Validator;
-
 use Illuminate\Http\Request;
+use \App\Models\Logs as LogsMDL;
 
 class ApiController extends Controller
 {
@@ -24,9 +23,8 @@ class ApiController extends Controller
      */
     public function calcAllLogs()
     {
-        return response()->json(\App\Models\Logs::orderBy('id', 'desc')->limit(5)->get()->toArray());
+        return response()->json(LogsMDL::orderBy('id', 'desc')->limit(5)->get()->toArray());
     }
-
     /**
      * Work with expression, and calculate from the string
      *
@@ -34,24 +32,23 @@ class ApiController extends Controller
     */
     public function calcExpression(Request $req)
     {
-      
         $validator = Validator::make($req->all(), [
             'data' => [
                 'required',
-                'regex:/[^+^*^\-^\-^\.^\/\d+]/u'
+                'not_regex:/[^+^*^\-^\-^\.^\/\d+]/u'
             ]
         ]);
 
-        if (!$validator->fails()) { // Validate expression
+        if ($validator->fails()) { // Validate expression
             $result = "Expression error!";
         } else {
             $result = (new \ChrisKonnertz\StringCalc\StringCalc())->calculate($req->get('data'));
             // All need to be loged
-            $n = new \App\Models\Logs();
+            $n = new LogsMDL();
             $n->expression = $req->get('data');
             $n->result = $result;
             $n->save();
         }
-         return response()->json(['result' => $result]);
+        return response()->json(['result' => $result]);
     }
 }
