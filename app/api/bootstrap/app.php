@@ -102,6 +102,15 @@ $app->configure('app');
 |
 */
 
+$app->register(App\Repositories\RepositoryServiceProvider::class);
+
+/*
+$app->register(
+    $app->bind(
+        'App\Repositories\Interfaces\ApiRepositoryInterface',
+        'App\Repositories\ApiRepository')
+    );
+*/
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
