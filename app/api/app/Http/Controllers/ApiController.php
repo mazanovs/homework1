@@ -32,25 +32,34 @@ class ApiController extends Controller
      *
      * @return json
     */
-    public function calcExpression(Request $req)
+    public function calcExpression(Request $req, $result = null)
     {
         $validator = Validator::make($req->all(), [
             'data' => [
                 'required',
+                'min:3',
                 'not_regex:/[^+^*^\-^\-^\.^\/\d+]/u'
             ]
         ]);
 
         if ($validator->fails()) { // Validate expression
             $result = "Expression error!";
-        } else {    
-            $result = (new \ChrisKonnertz\StringCalc\StringCalc())->calculate($req->get('data'));       
-            $this->apiRepository->save(
-                [
-                    'data'=>$req->get('data'), 
-                    'result'=>$result
-                ]
-            ); 
+        } else {
+            try{
+                $result = (new \ChrisKonnertz\StringCalc\StringCalc())->calculate($req->get('data'));    
+            } catch (Throwable $e){
+                $result = "Expression error!";
+            } finally {
+                if($result>0){
+                    $this->apiRepository->save(
+                        [
+                            'data'=>$req->get('data'), 
+                            'result'=>$result
+                        ]
+                    );
+                }
+            }
+  
         }
         return response()->json(['result' => $result]);
     }

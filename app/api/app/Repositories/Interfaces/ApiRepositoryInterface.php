@@ -6,6 +6,6 @@ use App\Models\Logs;
 
 interface ApiRepositoryInterface
 {
-    public function all($count);
-    public function save($params);
+    public function all(int $count);
+    public function save(array $params);
 }

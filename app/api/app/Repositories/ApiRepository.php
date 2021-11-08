@@ -9,14 +9,14 @@ use App\Repositories\Interfaces\ApiRepositoryInterface;
 class ApiRepository implements ApiRepositoryInterface
 {
  
-    public function all($count = 5)
+    public function all(int $count = 5)
     {
         //return DB::select('SELECT * FROM logs ORDER BY id DESC LIMIT 5');  
         return app('db')->select('SELECT * FROM logs ORDER BY id DESC LIMIT ?', [$count]);
         //return LogsMDL::orderBy('id', 'desc')->limit($count)->get()->toArray();
     }
 
-    public function save($p)
+    public function save(array $p)
     {
         app('db')->insert('INSERT INTO logs (expression,result) values (?, ?)',
             [
