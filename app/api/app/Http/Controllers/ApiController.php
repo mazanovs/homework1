@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\ApiRepositoryInterface;
-use App\Models\Logs as LogsMDL;
+//use App\Models\Logs as LogsMDL;
 
 class ApiController extends Controller
 {
@@ -24,11 +24,7 @@ class ApiController extends Controller
      */
     public function calcAllLogs()
     {
-        //return response()->json(LogsMDL::orderBy('id', 'desc')->limit(5)->get()->toArray());
-        // Use Repository pattern  
-        $result = $this->apiRepository->all(5);
-        return response()->json($result);
-
+        return response()->json($this->apiRepository->all(5));
     }
 
     /**
@@ -49,9 +45,11 @@ class ApiController extends Controller
             $result = "Expression error!";
         } else {    
             $result = (new \ChrisKonnertz\StringCalc\StringCalc())->calculate($req->get('data'));       
-            $this->apiRepository->save([
-                'data'=>$req->get('data'), 
-                'result'=>$result]
+            $this->apiRepository->save(
+                [
+                    'data'=>$req->get('data'), 
+                    'result'=>$result
+                ]
             ); 
         }
         return response()->json(['result' => $result]);

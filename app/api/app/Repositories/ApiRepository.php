@@ -12,7 +12,7 @@ class ApiRepository implements ApiRepositoryInterface
     public function all($count = 5)
     {
         //return DB::select('SELECT * FROM logs ORDER BY id DESC LIMIT 5');  
-        return app('db')->select('SELECT * FROM logs ORDER BY id DESC LIMIT 5');
+        return app('db')->select('SELECT * FROM logs ORDER BY id DESC LIMIT ?', [$count]);
         //return LogsMDL::orderBy('id', 'desc')->limit($count)->get()->toArray();
     }
 
@@ -24,12 +24,9 @@ class ApiRepository implements ApiRepositoryInterface
                 $p['result']
             ]
         );
-    /*
-        $n = new LogsMDL();
-        $n->expression = $p['data'];
-        $n->result = $p['result'];
-        $n->save();
-    */
-
+        //$n = new LogsMDL();
+        //$n->expression = $p['data'];
+        //$n->result = $p['result'];
+        //$n->save();
     }
 }
