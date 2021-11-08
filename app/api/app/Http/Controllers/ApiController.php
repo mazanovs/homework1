@@ -25,8 +25,10 @@ class ApiController extends Controller
     public function calcAllLogs()
     {
         //return response()->json(LogsMDL::orderBy('id', 'desc')->limit(5)->get()->toArray());
-        // Use Repository pattern
-        return response()->json($this->apiRepository->all(5));
+        // Use Repository pattern  
+        $result = $this->apiRepository->all(5);
+        return response()->json($result);
+
     }
 
     /**
@@ -45,19 +47,12 @@ class ApiController extends Controller
 
         if ($validator->fails()) { // Validate expression
             $result = "Expression error!";
-        } else {
-            $result = (new \ChrisKonnertz\StringCalc\StringCalc())->calculate($req->get('data'));
-            // Use Repository pattern
-            $params = new \stdClass();
-            $params->expression = $req->get('data');
-            $params->result = $result;
-            $this->apiRepository->save($params);
-            /*
-            $n = new LogsMDL();
-            $n->expression = $req->get('data');
-            $n->result = $result;
-            $n->save();
-            */
+        } else {    
+            $result = (new \ChrisKonnertz\StringCalc\StringCalc())->calculate($req->get('data'));       
+            $this->apiRepository->save([
+                'data'=>$req->get('data'), 
+                'result'=>$result]
+            ); 
         }
         return response()->json(['result' => $result]);
     }
