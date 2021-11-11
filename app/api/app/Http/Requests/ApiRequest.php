@@ -14,4 +14,5 @@ class ApiRequest extends Controller
       );
       parent::__construct($request);
    }
+
 }
