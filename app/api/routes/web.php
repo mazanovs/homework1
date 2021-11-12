@@ -11,5 +11,5 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api/calc'], function () use ($router) {
     $router->get('logs', 'ApiController@calcAllLogs');
-    $router->put('logs', 'ApiController@calcExpression');  
+    $router->put('/', ['middleware' => 'checkExpressionRequest', 'uses'=>'ApiController@calcExpression']);  
 });

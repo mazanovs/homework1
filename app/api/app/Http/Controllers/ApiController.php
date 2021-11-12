@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Repositories\Interfaces\ApiRepositoryInterface;
-use App\Http\Requests\ApiRequest;
 use \ChrisKonnertz\StringCalc\StringCalc;
 
 class ApiController extends Controller
@@ -31,16 +31,16 @@ class ApiController extends Controller
      *
      * @return json
     */
-    public function calcExpression(ApiRequest $aReq, StringCalc $strCalc, $result = "Expression error!")
+    public function calcExpression(Request $request, StringCalc $strCalc, $result = "Expression error!")
     {   
         try{
-            $result = $strCalc->calculate($aReq->getParams()->data);    
+            $result = $strCalc->calculate($request->get('data'));    
         } catch (Throwable $e){
             // Some debug work
         } finally {
             $this->apiRepository->save(
                 [
-                    'data'=>$aReq->getParams()->data, 
+                    'data'=>$request->get('data'), 
                     'result'=>$result
                 ]
             );

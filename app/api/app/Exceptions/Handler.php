@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
         if (env('APP_DEBUG')) {
             return parent::render($request, $exception);
         }else{
-            return response()->json(['result'=> 'System error!' ]);
+            return response()->json(['result'=> 'Expression error!' ]);
         }
     }
 }
