@@ -38,14 +38,12 @@ class ApiController extends Controller
         } catch (Throwable $e){
             // Some debug work
         } finally {
-            if($result>0){
-                $this->apiRepository->save(
-                    [
-                        'data'=>$aReq->getParams()->data, 
-                        'result'=>$result
-                    ]
-                );
-            }
+            $this->apiRepository->save(
+                [
+                    'data'=>$aReq->getParams()->data, 
+                    'result'=>$result
+                ]
+            );
             return response()->json(['result' => $result]);
         }
         

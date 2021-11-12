@@ -9,7 +9,7 @@ class ApiRequest extends Controller
    public function __construct(Request $request)
    {
       $this->validate($request, [
-            'data' => ['required','min:3','not_regex:/[^+^*^\-^\-^\.^\/\d+]/u']
+            'data' => ['required','min:2','not_regex:/[^+^*^\-^\-^\.^\/\d+]/u']
          ]
       );
       parent::__construct($request);
